@@ -24,7 +24,8 @@ import pers.zhangyu.rabbitmq.utils.SerializeUtil;
 @Configuration
 @AutoConfigureAfter(RabbitMqConfig.class)
 public class TopicAmqpConfiguration {
-    @Bean("topicTest1Container")
+
+    @Bean("topicContainer")
     public MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
@@ -35,7 +36,7 @@ public class TopicAmqpConfiguration {
     }
 
 
-    @Bean("topicTest1Listener")
+    @Bean("topicListener")
     public ChannelAwareMessageListener exampleListener1(){
         return (message, channel) -> {
             User User = (pers.zhangyu.rabbitmq.domain.User) SerializeUtil.unserialize(message.getBody());

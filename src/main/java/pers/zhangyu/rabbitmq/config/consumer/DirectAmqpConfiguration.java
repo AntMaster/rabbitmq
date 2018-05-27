@@ -28,7 +28,7 @@ public class DirectAmqpConfiguration {
      * 直连消费者通过设置User的name来测试回调，分别发两条消息，一条UserName为1，一条为2，查看控制台中队列中消息是否被消费
      */
 
-    @Bean("testQueueContainer")
+    @Bean("queueContainer")
     public MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
@@ -38,18 +38,20 @@ public class DirectAmqpConfiguration {
         return container;
     }
 
-    @Bean("testQueueListener")
+    @Bean("queueListener")
     public ChannelAwareMessageListener exampleListener() {
         return (message, channel) -> {
-            User User = (User) SerializeUtil.unserialize(message.getBody());
             //通过设置User的name来测试回调，分别发两条消息，一条UserName为1，一条为2，查看控制台中队列中消息是否被消费
-            if ("2".equals(User.getUserName())) {
-                System.out.println(User.toString());
+            //User User = (User) SerializeUtil.unserialize(message.getBody());
+
+            String name = new String(message.getBody());
+            if ("2".equals(name)) {
+                System.out.println(name);
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             }
 
-            if ("1".equals(User.getUserName())) {
-                System.out.println(User.toString());
+            if ("1".equals(name)) {
+                System.out.println(name);
                 channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
             }
 

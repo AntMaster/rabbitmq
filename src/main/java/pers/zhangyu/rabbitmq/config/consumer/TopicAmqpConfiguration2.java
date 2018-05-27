@@ -21,6 +21,7 @@ import pers.zhangyu.rabbitmq.utils.SerializeUtil;
 @Configuration
 @AutoConfigureAfter(RabbitMqConfig.class)
 public class TopicAmqpConfiguration2 {
+
     @Bean("topicTest2Container")
     public MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
