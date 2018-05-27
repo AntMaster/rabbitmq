@@ -4,5 +4,5 @@ spring:
     addresses: 127.0.0.1:5672
     username: guest
     password: guest
-    publisher-confirms: false
+    publisher-confirms: true
     virtual-host: /

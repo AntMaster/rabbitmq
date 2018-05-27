@@ -9,14 +9,12 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pers.zhangyu.rabbitmq.config.RabbitMqConfig;
-import pers.zhangyu.rabbitmq.domain.User;
-import pers.zhangyu.rabbitmq.utils.SerializeUtil;
 
 /**
  * 消费者配置
  *
  * @author chenhf
- * @create 2017-10-30 下午3:14
+ * 2017-10-30 下午3:14
  * <p>
  * springboot注解方式监听队列，无法手动指定回调，所以采用了实现ChannelAwareMessageListener接口，重写onMessage来进行手动回调
  **/
@@ -45,6 +43,7 @@ public class DirectAmqpConfiguration {
             //User User = (User) SerializeUtil.unserialize(message.getBody());
 
             String name = new String(message.getBody());
+
             if ("2".equals(name)) {
                 System.out.println(name);
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);

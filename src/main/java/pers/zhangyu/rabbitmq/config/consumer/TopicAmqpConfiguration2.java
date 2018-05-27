@@ -9,14 +9,12 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pers.zhangyu.rabbitmq.config.RabbitMqConfig;
-import pers.zhangyu.rabbitmq.domain.User;
-import pers.zhangyu.rabbitmq.utils.SerializeUtil;
 
 /**
  * 消费者配置
  *
  * @author chenhf
- * @create 2017-10-30 下午3:14
+ *  2017-10-30 下午3:14
  **/
 @Configuration
 @AutoConfigureAfter(RabbitMqConfig.class)
@@ -36,8 +34,9 @@ public class TopicAmqpConfiguration2 {
     @Bean("topicTest2Listener")
     public ChannelAwareMessageListener exampleListener() {
         return (message, channel) -> {
-            User User = (pers.zhangyu.rabbitmq.domain.User) SerializeUtil.unserialize(message.getBody());
-            System.out.println("TOPICTEST2：" + User.toString());
+
+            String name = new String(message.getBody());
+            System.out.println("TOPICTEST2：" + name);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         };
     }

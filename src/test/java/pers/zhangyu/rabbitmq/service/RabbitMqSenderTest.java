@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 public class RabbitMqSenderTest {
 
 
-   /* @Autowired
+    @Autowired
     private RabbitMqSender rabbitMqSender;
 
 
@@ -25,14 +25,14 @@ public class RabbitMqSenderTest {
 
     @Test
     public void sendRabbitmqDirect() {
-        rabbitMqSender.sendRabbitmqDirect("TESTQUEUE1", "1");
+        rabbitMqSender.sendRabbitmqDirect("TESTQUEUE1", "2");
     }
 
     @Test
     public void sendRabbitmqTopic() {
 
-        //rabbitMqSender.sendRabbitmqTopic("lazy.1.2", user);
-        //rabbitMqSender.sendRabbitmqTopic("lazy.TEST.2", user);
+        rabbitMqSender.sendRabbitmqTopic("lazy.1.2", "1");
+        //rabbitMqSender.sendRabbitmqTopic("lazy.TEST.2", "123");
 
-    }*/
+    }
 }
