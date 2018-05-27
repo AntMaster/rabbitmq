@@ -30,15 +30,18 @@ public class RabbitMqExchangeConfig {
      */
     private static final Logger logger = LoggerFactory.getLogger(RabbitMqExchangeConfig.class);
 
+
+    //-----------------------------------------------------------------exchange------------------------------------------------------------------------------------------------
+
     /**
      * 直连型交换机
      */
     @Bean
-    DirectExchange contractDirectExchange(RabbitAdmin rabbitAdmin) {
-        DirectExchange contractDirectExchange = new DirectExchange(RabbitMqEnum.Exchange.CONTRACT_DIRECT.getCode());
-        rabbitAdmin.declareExchange(contractDirectExchange);
+    DirectExchange directExchange(RabbitAdmin rabbitAdmin) {
+        DirectExchange directExchange = new DirectExchange(RabbitMqEnum.Exchange.CONTRACT_DIRECT.getCode());
+        rabbitAdmin.declareExchange(directExchange);
         logger.debug("完成直连型交换机bean实例化");
-        return contractDirectExchange;
+        return directExchange;
     }
 
 
@@ -46,46 +49,46 @@ public class RabbitMqExchangeConfig {
      * 主题型交换机
      */
     @Bean
-    TopicExchange contractTopicExchangeDurable(RabbitAdmin rabbitAdmin) {
-        TopicExchange contractTopicExchange = new TopicExchange(RabbitMqEnum.Exchange.CONTRACT_TOPIC.getCode());
-        rabbitAdmin.declareExchange(contractTopicExchange);
+    TopicExchange topicExchange(RabbitAdmin rabbitAdmin) {
+        TopicExchange topicExchange = new TopicExchange(RabbitMqEnum.Exchange.CONTRACT_TOPIC.getCode());
+        rabbitAdmin.declareExchange(topicExchange);
         logger.debug("完成主题型交换机bean实例化");
-        return contractTopicExchange;
+        return topicExchange;
     }
 
+    //-----------------------------------------------------------------queue------------------------------------------------------------------------------------------------
 
-    //在此可以定义队列
     @Bean
-    Queue queueTest(RabbitAdmin rabbitAdmin) {
+    Queue directQueue(RabbitAdmin rabbitAdmin) {
         Queue queue = new Queue(RabbitMqEnum.QueueName.TESTQUEUE.getCode());
         rabbitAdmin.declareQueue(queue);
         logger.debug("测试队列实例化完成");
         return queue;
     }
 
-    //topic 1
+
     @Bean
-    Queue queueTopicTest1(RabbitAdmin rabbitAdmin) {
+    Queue topicQueue1(RabbitAdmin rabbitAdmin) {
         Queue queue = new Queue(RabbitMqEnum.QueueName.TOPICTEST1.getCode());
         rabbitAdmin.declareQueue(queue);
         logger.debug("话题测试队列1实例化完成");
         return queue;
     }
 
-    //topic 2
+
     @Bean
-    Queue queueTopicTest2(RabbitAdmin rabbitAdmin) {
+    Queue topicQueue2(RabbitAdmin rabbitAdmin) {
         Queue queue = new Queue(RabbitMqEnum.QueueName.TOPICTEST2.getCode());
         rabbitAdmin.declareQueue(queue);
         logger.debug("话题测试队列2实例化完成");
         return queue;
     }
 
-
-    //在此处完成队列和交换机绑定
+    //----------------------------------------------------------------binding-------------------------------------------------------------------------------------------------
+    //binding exchange queue
     @Bean
-    Binding bindingQueueTest(Queue queueTest, DirectExchange exchange, RabbitAdmin rabbitAdmin) {
-        Binding binding = BindingBuilder.bind(queueTest).to(exchange).with(RabbitMqEnum.QueueEnum.TESTQUEUE.getCode());
+    Binding bindingQueueTest(Queue directQueue, DirectExchange directExchange, RabbitAdmin rabbitAdmin) {
+        Binding binding = BindingBuilder.bind(directQueue).to(directExchange).with(RabbitMqEnum.QueueEnum.TESTQUEUE.getCode());
         rabbitAdmin.declareBinding(binding);
         logger.debug("测试队列与直连型交换机绑定完成");
         return binding;
@@ -93,8 +96,8 @@ public class RabbitMqExchangeConfig {
 
     //topic binding1
     @Bean
-    Binding bindingQueueTopicTest1(Queue queueTopicTest1, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
-        Binding binding = BindingBuilder.bind(queueTopicTest1).to(exchange).with(RabbitMqEnum.QueueEnum.TESTTOPICQUEUE1.getCode());
+    Binding bindingQueueTopicTest1(Queue topicQueue1, TopicExchange topicExchange, RabbitAdmin rabbitAdmin) {
+        Binding binding = BindingBuilder.bind(topicQueue1).to(topicExchange).with(RabbitMqEnum.QueueEnum.TESTTOPICQUEUE1.getCode());
         rabbitAdmin.declareBinding(binding);
         logger.debug("测试队列与话题交换机1绑定完成");
         return binding;
@@ -102,8 +105,8 @@ public class RabbitMqExchangeConfig {
 
     //topic binding2
     @Bean
-    Binding bindingQueueTopicTest2(Queue queueTopicTest2, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
-        Binding binding = BindingBuilder.bind(queueTopicTest2).to(exchange).with(RabbitMqEnum.QueueEnum.TESTTOPICQUEUE2.getCode());
+    Binding bindingQueueTopicTest2(Queue topicQueue2, TopicExchange exchange, RabbitAdmin rabbitAdmin) {
+        Binding binding = BindingBuilder.bind(topicQueue2).to(exchange).with(RabbitMqEnum.QueueEnum.TESTTOPICQUEUE2.getCode());
         rabbitAdmin.declareBinding(binding);
         logger.debug("测试队列与话题交换机2绑定完成");
         return binding;
